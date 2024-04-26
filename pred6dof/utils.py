@@ -123,3 +123,36 @@ def get_csv_files(dataset_path):
         numerical_files_sorted.append(os.path.join(dataset_path, file))
 
     return numerical_files_sorted
+
+
+def deserialize_to_dictionary(data):
+    """
+    Deserialize JSON data received from a client and extract variable values.
+    
+    Args:
+    - data (str): The JSON data received from the client.
+    
+    Returns:
+    - dict: A dictionary containing the extracted variable values.
+    """
+    try:
+        json_data = json.loads(data)
+    except json.JSONDecodeError as e:
+        print(f"Error decoding JSON: {e}")
+        # Handle the error appropriately, such as returning an error response to the client
+        return None
+    
+    try:
+        pos = json_data['pos']
+        linear_velocity = json_data['linear_velocity']
+        # Extract more variables as needed
+    except KeyError as e:
+        print(f"Error extracting variable: {e}")
+        # Handle the error appropriately, such as returning an error response to the client
+        return None
+    
+    return {
+        'pos': pos,
+        'linear_velocity': linear_velocity
+        # Add more extracted variables as needed
+    }
