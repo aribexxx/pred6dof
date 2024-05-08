@@ -264,16 +264,26 @@ class Application:
             help='Selects which prediction algorithm is run on the data traces'
         )
 
+        # run_command_parser.add_argument(
+        #     '-d',
+        #     '--dataset-path',
+        #     dest='dataset_path',
+        #     type=str,
+        #     metavar='',
+        #     default='./data/interpolated',
+        #     help='Path to the head motion traces dataset'
+        # )
+        
         run_command_parser.add_argument(
             '-d',
             '--dataset-path',
             dest='dataset_path',
             type=str,
             metavar='',
-            default='./data/interpolated',
-            help='Path to the head motion traces dataset'
+            default='./data/alvr',
+            help='Path to the head motion traces dataset collected from alvr'
         )
-        
+
         run_command_parser.add_argument(
             '-w',
             '--pred-window',

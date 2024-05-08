@@ -41,7 +41,9 @@ import pickle
 import os
 import logging
 import numpy as np
+import csv
 import pandas as pd
+import json
 from matplotlib import pyplot as plt
 from scipy.spatial.transform import Rotation as R
 from scipy.spatial.transform import Slerp
@@ -125,34 +127,40 @@ def get_csv_files(dataset_path):
     return numerical_files_sorted
 
 
-def deserialize_to_dictionary(data):
-    """
-    Deserialize JSON data received from a client and extract variable values.
-    
-    Args:
-    - data (str): The JSON data received from the client.
-    
-    Returns:
-    - dict: A dictionary containing the extracted variable values.
-    """
-    try:
-        json_data = json.loads(data)
-    except json.JSONDecodeError as e:
-        print(f"Error decoding JSON: {e}")
-        # Handle the error appropriately, such as returning an error response to the client
-        return None
-    
-    try:
-        pos = json_data['pos']
-        linear_velocity = json_data['linear_velocity']
-        # Extract more variables as needed
-    except KeyError as e:
-        print(f"Error extracting variable: {e}")
-        # Handle the error appropriately, such as returning an error response to the client
-        return None
-    
-    return {
-        'pos': pos,
-        'linear_velocity': linear_velocity
-        # Add more extracted variables as needed
-    }
+def write_single_to_csv(data_obj, filename):
+    # Extract data from the data_obj
+    timestamp = data_obj['timestamp']['nanos']
+    orientation = data_obj['motion']['pose']['orientation']
+    position = data_obj['motion']['pose']['position']
+
+    # Write data to CSV file in append mode
+    with open(filename, mode='a', newline='') as file:
+        writer = csv.writer(file)
+        # Check if the file is empty (no headers)
+        file.seek(0, 2)  # Move to the end of the file
+        file_empty = file.tell() == 0  # Check if the file pointer is at position 0
+        # If the file is empty, write the header row
+        if file_empty:
+            writer.writerow(['timestamp', 'px', 'py', 'pz', 'qx', 'qy', 'qz', 'qw'])
+        # Write data rows
+        writer.writerow([timestamp, position[0], position[1], position[2], orientation[0], orientation[1], orientation[2], orientation[3]])
+
+#TODO : collect data by sessions
+def write_sessions_csv_files(data_obj):
+    # Extract data from the data_obj
+    timestamp = data_obj['timestamp']['nanos']
+    orientation = data_obj['motion']['pose']['orientation']
+    position = data_obj['motion']['pose']['position']
+
+    # Write data to CSV file in append mode
+    with open(filename, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        # Check if the file is empty (no headers)
+        file.seek(0, 2)  # Move to the end of the file
+        file_empty = file.tell() == 0  # Check if the file pointer is at position 0
+        # If the file is empty, write the header row
+        if file_empty:
+            writer.writerow(['timestamp', 'px', 'py', 'pz', 'qx', 'qy', 'qz', 'qw'])
+        # Write data rows
+        writer.writerow([timestamp, position[0], position[1], position[2], orientation[0], orientation[1], orientation[2], orientation[3]])
+    return

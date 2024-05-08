@@ -147,11 +147,13 @@ class KalmanRunner():
                 logging.debug("A sign flip occurred.")
                 self.reset()
             self.kf.predict()
+            #todo: instead of using z we use data from alvr
             self.kf.update(z)
             self.lookahead()
             xs.append(self.kf.x)
             covs.append(self.kf.P)
             x_preds.append(self.kf.x_pred)
+            print(f"origin:{z},\n pred:{self.kf.x_pred}\n")
             z_prev = z
         
         # Compute evaluation metrics
@@ -191,6 +193,7 @@ class KalmanRunner():
                                         'ang_dists_{}_{}ms.npy'.format(basename, int(w*1e3))), ang_dists)
                 result_single = list(np.hstack((basename, w, metrics)))
                 results.append(result_single)
+                print("result{}",results)
                 print("--------------------------------------------------------------")
 
         # Save metrics
