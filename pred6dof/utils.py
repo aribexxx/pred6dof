@@ -127,14 +127,14 @@ def get_csv_files(dataset_path):
     return numerical_files_sorted
 
 
-def write_single_to_csv(data_obj, filename):
+def write_single_to_csv(data_obj, csv_filename):
     # Extract data from the data_obj
     timestamp = data_obj['timestamp']['nanos']
     orientation = data_obj['motion']['pose']['orientation']
     position = data_obj['motion']['pose']['position']
 
     # Write data to CSV file in append mode
-    with open(filename, mode='a', newline='') as file:
+    with open(csv_filename, mode='a', newline='') as file:
         writer = csv.writer(file)
         # Check if the file is empty (no headers)
         file.seek(0, 2)  # Move to the end of the file
