@@ -80,7 +80,8 @@ try:
         # client_socket.sendall("hiiiioooo".encode())
         while True:
             try:
-                json_str = client_socket.recv(1024).decode()
+                # adding utf-8 make sure that decode as json string
+                json_str = client_socket.recv(1024).decode('utf-8')
                 # receive_json_messages(client_socket)
                 if not json_str:
                     break
