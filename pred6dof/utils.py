@@ -129,7 +129,7 @@ def get_csv_files(dataset_path):
 
 def write_single_to_csv(data_obj, csv_filename):
     # Extract data from the data_obj
-    timestamp = data_obj['timestamp']['nanos']
+    timestamp = data_obj['timestamp']
     orientation = data_obj['motion']['pose']['orientation']
     position = data_obj['motion']['pose']['position']
 

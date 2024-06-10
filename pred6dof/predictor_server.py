@@ -95,7 +95,7 @@ try:
                 json_objects = [json.loads(line) for line in json_lines if line.strip()]
                 for json_obj in json_objects:
                     # Access pose orientation and position separately
-                    timestamp =  json_obj['timestamp']['nanos']
+                    timestamp =  json_obj['timestamp']
                     orientation = json_obj['motion']['pose']['orientation']
                     position = json_obj['motion']['pose']['position']
                     print(f"Timestamp: {timestamp}, Orientation: {orientation}, Position: {position}")
@@ -116,12 +116,8 @@ try:
                     # Write to CSV if recording is enabled
                     if record_trace is None:
                         record_trace = input("If you want to start recording trace, press Enter. Otherwise, press any other key: ") == ""
-                    
                     if record_trace:
                         utils.write_single_to_csv(json_obj, csv_filename=f"./data/{csv_filename}.csv")
-                        
-                    
-                    #utils.write_sessions_csv_files()
                 
             except ConnectionResetError as cre:
                 print(f"Connection was reset: {cre}")
