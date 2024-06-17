@@ -139,6 +139,14 @@ class KalmanRunner():
         df_trace = pd.read_csv(trace_path)
         xs, covs, x_preds = [], [], []
         zs = df_trace[self.coords].to_numpy()
+        z_with_time = df_trace.to_numpy()
+        z_t_pre = 0
+        # TODO: timestamp still has problem
+        for z_t in z_with_time:
+            diff = z_t[0] - z_t_pre
+            print(f"{diff} between timestamp")
+            z_t_pre = z_t[0]
+            
         z_prev = np.zeros(7)
         for z in zs:
             sign_array = -np.sign(z_prev[3:]) * np.sign(z[3:])
@@ -160,6 +168,7 @@ class KalmanRunner():
         xs = np.array(xs).squeeze()
         covs = np.array(covs).squeeze()
         x_preds = np.array(x_preds).squeeze()
+        
         pred_step = int(w / self.dt)
         eval = Evaluator(zs, x_preds[:, ::2], pred_step)
         eval.eval_kalman()
@@ -187,10 +196,10 @@ class KalmanRunner():
                 self.reset()
 
                 metrics, euc_dists, ang_dists = self.run_single(trace_path, w)
-                np.save(os.path.join(dists_path, 
-                                        'euc_dists_{}_{}ms.npy'.format(basename, int(w*1e3))), euc_dists)
-                np.save(os.path.join(dists_path, 
-                                        'ang_dists_{}_{}ms.npy'.format(basename, int(w*1e3))), ang_dists)
+                np.savetxt(os.path.join(dists_path, 
+                                        'euc_dists_{}_{}ms.csv'.format(basename, int(w*1e3))), euc_dists)
+                np.savetxt(os.path.join(dists_path, 
+                                        'ang_dists_{}_{}ms.csv'.format(basename, int(w*1e3))), ang_dists)
                 result_single = list(np.hstack((basename, w, metrics)))
                 results.append(result_single)
                 print("result{}",results)

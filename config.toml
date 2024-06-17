@@ -1,5 +1,5 @@
 # General
-pos_coords  = ['x', 'y', 'z']
+pos_coords  = ['px', 'py', 'pz']
 quat_coords = ['qw', 'qx', 'qy', 'qz']
 dt = 0.005          # Sampling time [s]
 

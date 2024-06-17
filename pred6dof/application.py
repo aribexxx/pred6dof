@@ -264,25 +264,25 @@ class Application:
             help='Selects which prediction algorithm is run on the data traces'
         )
 
-        run_command_parser.add_argument(
-            '-d',
-            '--dataset-path',
-            dest='dataset_path',
-            type=str,
-            metavar='',
-            default='./data/interpolated',
-            help='Path to the head motion traces dataset'
-        )
-        
         # run_command_parser.add_argument(
         #     '-d',
         #     '--dataset-path',
         #     dest='dataset_path',
         #     type=str,
         #     metavar='',
-        #     default='./data/alvr',
-        #     help='Path to the head motion traces dataset collected from alvr'
+        #     default='./data/interpolated',
+        #     help='Path to the head motion traces dataset'
         # )
+        
+        run_command_parser.add_argument(
+            '-d',
+            '--dataset-path',
+            dest='dataset_path',
+            type=str,
+            metavar='',
+            default='./data/bj',
+            help='Path to the head motion traces dataset collected from alvr bjorn;s data'
+        )
 
         run_command_parser.add_argument(
             '-w',
@@ -295,13 +295,23 @@ class Application:
             help='Sets the prediction window/look-ahead time [ms]'
         )
 
+        # run_command_parser.add_argument(
+        #     '-r',
+        #     '--results-path',
+        #     dest='results_path',
+        #     type=str,
+        #     metavar='',
+        #     default='./results/tabular',
+        #     help='Path where results are stored as CSV'
+        # )
+        
         run_command_parser.add_argument(
             '-r',
             '--results-path',
             dest='results_path',
             type=str,
             metavar='',
-            default='./results/tabular',
+            default='./results/',
             help='Path where results are stored as CSV'
         )
         

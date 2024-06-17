@@ -107,7 +107,6 @@ class KalmanRunner():
         setattr(self.kf, 'F_lookahead', block_diag(f_l, f_l, f_l, f_l, f_l, f_l, f_l))
         xs, covs, x_preds = [], [], []
         current_measure_z = measure_motion
-        print(f"current messsaure:{ current_measure_z}")
         self.kf.predict()
         self.kf.update(current_measure_z)
         self.lookahead()

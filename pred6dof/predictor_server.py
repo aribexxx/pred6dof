@@ -98,18 +98,18 @@ try:
                     timestamp =  json_obj['timestamp']
                     orientation = json_obj['motion']['pose']['orientation']
                     position = json_obj['motion']['pose']['position']
-                    print(f"Timestamp: {timestamp}, Orientation: {orientation}, Position: {position}")
+                    print(f"From server: Timestamp: {timestamp}, Orientation: {orientation}, Position: {position}")
                     pose = np.array([position[0], position[1], position[2], orientation[0],orientation[1],orientation[2],orientation[3]])
                     runner.run_with_single_pred_win(measure_motion = pose,w = 100)
                     x_pred_arr = np.squeeze(runner.kf.x)
                     only_pos_arr = x_pred_arr[1::2]
-                    print(f"predicted array with only 7 number pose: {only_pos_arr.tolist()}") 
+                    # print(f"predicted array with only 7 number pose: {only_pos_arr.tolist()}") 
                     # Create the data with a custom key "pose"
                     json_data = json.dumps({
                         "timestamp":timestamp,
                         "predicted_pose": only_pos_arr.tolist()
                     })
-                    print(f"json data {json_data}")
+                    # print(f"json data {json_data}")
                     # client_socket.sendall("Hiiiiiii from predictor".encode())
                     #TODO: send predicted result as array back to server.
                     client_socket.send(json_data.encode())
@@ -117,7 +117,7 @@ try:
                     if record_trace is None:
                         record_trace = input("If you want to start recording trace, press Enter. Otherwise, press any other key: ") == ""
                     if record_trace:
-                        utils.write_single_to_csv(json_obj, csv_filename=f"./data/{csv_filename}.csv")
+                        utils.write_single_to_csv(json_obj, csv_filename=f"./data/micro/{csv_filename}.csv")
                 
             except ConnectionResetError as cre:
                 print(f"Connection was reset: {cre}")
