@@ -141,19 +141,19 @@ class KalmanRunner():
         zs = df_trace[self.coords].to_numpy()
         z_with_time = df_trace.to_numpy()
         z_t_pre = 0
-        # TODO: timestamp still has problem
-        for z_t in z_with_time:
-            diff = z_t[0] - z_t_pre
-            print(f"{diff} between timestamp")
-            z_t_pre = z_t[0]
+        # # TODO: timestamp still has problem
+        # for z_t in z_with_time:
+        #     diff = z_t[0] - z_t_pre
+        #     print(f"{diff} between timestamp")
+        #     z_t_pre = z_t[0]
             
         z_prev = np.zeros(7)
         for z in zs:
-            sign_array = -np.sign(z_prev[3:]) * np.sign(z[3:])
-            sign_flipped = all(e == 1 for e in sign_array)
-            if sign_flipped:
-                logging.debug("A sign flip occurred.")
-                self.reset()
+            # sign_array = -np.sign(z_prev[3:]) * np.sign(z[3:])
+            # sign_flipped = all(e == 1 for e in sign_array)
+            # if sign_flipped:
+            #     logging.debug("A sign flip occurred.")
+            #     self.reset()
             self.kf.predict()
             #todo: instead of using z we use data from alvr
             self.kf.update(z)
@@ -161,7 +161,7 @@ class KalmanRunner():
             xs.append(self.kf.x)
             covs.append(self.kf.P)
             x_preds.append(self.kf.x_pred)
-            print(f"origin:{z},\n pred:{self.kf.x_pred}\n")
+            print(f"origin:{z},\n pred:{self.kf.x_pred[::2]}\n")
             z_prev = z
         
         # Compute evaluation metrics
