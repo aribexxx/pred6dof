@@ -280,7 +280,7 @@ class Application:
             dest='dataset_path',
             type=str,
             metavar='',
-            default='./data/micro',
+            default='./data/num',
             help='Path to the head motion traces dataset collected from alvr bjorn;s data'
         )
 
