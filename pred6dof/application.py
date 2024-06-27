@@ -221,7 +221,7 @@ class Application:
             dest='output_path',
             type=str,
             metavar='',
-            default='./data/interpolated',
+            default='./data/num',
             help='Path to the interpolated (resampled) dataset'
         )
 

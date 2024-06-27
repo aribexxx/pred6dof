@@ -127,9 +127,10 @@ def get_csv_files(dataset_path):
     return numerical_files_sorted
 
 
-def write_single_to_csv(data_obj, csv_filename):
+def write_measure_single_to_csv(data_obj, csv_filename):
     # Extract data from the data_obj
     timestamp = data_obj['timestamp']
+    device_id = data_obj['device_id']
     orientation = data_obj['motion']['pose']['orientation']
     position = data_obj['motion']['pose']['position']
 
@@ -141,9 +142,27 @@ def write_single_to_csv(data_obj, csv_filename):
         file_empty = file.tell() == 0  # Check if the file pointer is at position 0
         # If the file is empty, write the header row
         if file_empty:
-            writer.writerow(['timestamp', 'px', 'py', 'pz', 'qx', 'qy', 'qz', 'qw'])
+            writer.writerow(['device_id','timestamp', 'px', 'py', 'pz', 'qx', 'qy', 'qz', 'qw'])
         # Write data rows
-        writer.writerow([timestamp, position[0], position[1], position[2], orientation[0], orientation[1], orientation[2], orientation[3]])
+        writer.writerow([device_id,timestamp, position[0], position[1], position[2], orientation[0], orientation[1], orientation[2], orientation[3]])
+        
+def write_predicted_single_to_csv(data_obj, csv_filename):
+    # Extract data from the data_obj
+    timestamp = data_obj['timestamp']
+    orientation = data_obj['predicted_pose']['pose']['orientation']
+    position = data_obj['predicted_pose']['pose']['position']
+    device_id = data_obj['device_id']
+    # Write data to CSV file in append mode
+    with open(csv_filename, mode='a', newline='') as file:
+        writer = csv.writer(file)
+        # Check if the file is empty (no headers)
+        file.seek(0, 2)  # Move to the end of the file
+        file_empty = file.tell() == 0  # Check if the file pointer is at position 0
+        # If the file is empty, write the header row
+        if file_empty:
+            writer.writerow(['device_id','timestamp', 'px', 'py', 'pz', 'qx', 'qy', 'qz', 'qw'])
+        # Write data rows
+        writer.writerow([device_id,timestamp, position[0], position[1], position[2], orientation[0], orientation[1], orientation[2], orientation[3]])
 
 #TODO : collect data by sessions
 def write_sessions_csv_files(data_obj):
